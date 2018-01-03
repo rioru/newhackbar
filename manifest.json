@@ -3,19 +3,18 @@
   "manifest_version": 2,
   "name": "New Hackbar",
   "description": "A sitebar that helps pentesters to perform manual web security testing inside their browser. This addon is writed in webextension and alternatives to the XUL version of origanal Hackbar.",
-  "version": "1.0.2",
+  "version": "1.0.2-rioru",
   "applications": {
     "gecko": {
       "strict_min_version": "57.0a1"
     }
   },
-  "author": "mxcx",
+  "author": "mxcx & rioru",
   "developer": {
     "name": "mxcx",
     "url": "http://fosec.vn"
   },
-  "homepage_url": "https://github.com/mxcxvn/newhackbar",
-
+  "homepage_url": "https://github.com/rioru/newhackbar",
   "icons": {
     "48": "icons/fosecicon.png",
     "96": "icons/fosecicon.png"

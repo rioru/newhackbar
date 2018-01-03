@@ -1,11 +1,11 @@
 HackBar.Crypto = {
 
-  isMD5: function (s) 
+  isMD5: function (s)
   {
     return (/^[A-Fa-f0-9]{32}$/).test(s);
   },
 
-  isSHA1: function (s) 
+  isSHA1: function (s)
   {
     return (/^[A-Fa-f0-9]{40}$/).test(s);
   },
@@ -13,7 +13,7 @@ HackBar.Crypto = {
   getClearTextPassword: function ( hash )
   {
     var value = hackBar.getSelectedText();
-    
+
     if ( (hash == "md5" && this.isMD5(value)) || (hash == "sha1" && this.isSHA1(value)))
     {
       var req = new XMLHttpRequest();
@@ -38,15 +38,15 @@ HackBar.Crypto = {
           default:
             cleartext = "No results :(";
             break;
-        }      
+        }
         hackBar.setSelectedText( cleartext );
       }
       req.open('GET', 'http://md5.rednoize.com/?p&s='+ hash +'&q=' + value + '&hackbar=1.5.1', true);
-      req.send(null);  
+      req.send(null);
     }
     else
     {
       hackBar.setSelectedText( "To avoid sending private password to public databases only MD5 and SHA1 hashes will be submited" );
-    } 
+    }
   }
 }

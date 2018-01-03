@@ -23,6 +23,13 @@
         <li><a name="base64decode" style="background: url('skin/uud.png');background-repeat: no-repeat;">Base64 Decode</a></li>
         <li><a name="urlencode" style="background: url('skin/urle.png');background-repeat: no-repeat;">Url Encode</a></li>
         <li><a name="urldecode" style="background: url('skin/urld.png');background-repeat: no-repeat;">Url Decode</a></li>
+        <li><a name="reverse" style="background: url('skin/string.png');background-repeat: no-repeat;">Reverse</a></li>
+      </ul>
+    </li>
+    <li><a class="downarrow" name="encodingmenu">Inject</a>
+      <ul class="dropdown-content">
+        <li><a name="union" style="background: url('skin/string.png');background-repeat: no-repeat;">UNION</a></li>
+        <li><a name="sqlchar" style="background: url('skin/string.png');background-repeat: no-repeat;">SQL/XSS CHAR()</a></li>
       </ul>
     </li>
   </ul>
@@ -31,16 +38,19 @@
   <div><button class="loadurl">Load</button>
   <button class="split">Split</button>
   <button class="execute">Run</button></div>
-  <textarea spellcheck="false" class = "urlfield"></textarea><br>
+  <textarea spellcheck="false" class = "urlfield" name="urlfield"></textarea><br>
   <div><label><input type="checkbox" name="enablepostdata" value="">Enable Post data</label></div>
   <textarea spellcheck="false" class = "postdatafield hiddenfied"></textarea>
   <div><label><input type="checkbox" name="enablereferer" value="">Enable Referer</label></div>
   <textarea spellcheck="false" class = "refererfield hiddenfied"></textarea>
   <div class="footer">
-    <a href="http://fosec.vn" target="_blank">Power by mxcx@fosec.vn</a>
+    <a href="http://fosec.vn" target="_blank">About</a>
   </div>
+  <script src="namespace.js"></script>
   <script src="newhackbar.js"></script>
   <script src="Encrypt.js"></script>
+  <script src="SQL.js"></script>
+  <script src="Strings.js"></script>
 </body>
 
 </html>

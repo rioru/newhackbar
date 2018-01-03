@@ -62,10 +62,14 @@ var b64encodeBtn = document.getElementsByName("base64encode")[0];
 var b64decodeBtn = document.getElementsByName("base64decode")[0];
 var urlencodeBtn = document.getElementsByName("urlencode")[0];
 var urldecodeBtn = document.getElementsByName("urldecode")[0];
+var reverseBtn = document.getElementsByName("reverse")[0];
 var md5hashBtn = document.getElementsByName("md5hash")[0];
 var sha1hashBtn = document.getElementsByName("sha1hash")[0];
 var sha256hashBtn = document.getElementsByName("sha256hash")[0];
 var rot13Btn = document.getElementsByName("rot13")[0];
+
+var unionBtn = document.getElementsByName("union")[0];
+var sqlcharBtn = document.getElementsByName("sqlchar")[0];
 
 var postdataCbx = document.getElementsByName("enablepostdata")[0];
 var refererCbx = document.getElementsByName("enablereferer")[0];
@@ -85,10 +89,14 @@ b64encodeBtn.addEventListener('click', anonClickMenuFunct, false);
 b64decodeBtn.addEventListener('click', anonClickMenuFunct, false);
 urlencodeBtn.addEventListener('click', anonClickMenuFunct, false);
 urldecodeBtn.addEventListener('click', anonClickMenuFunct, false);
+reverseBtn.addEventListener('click', anonClickMenuFunct, false);
 md5hashBtn.addEventListener('click', anonClickMenuFunct, false);
 sha1hashBtn.addEventListener('click', anonClickMenuFunct, false);
 sha256hashBtn.addEventListener('click', anonClickMenuFunct, false);
 rot13Btn.addEventListener('click', anonClickMenuFunct, false);
+
+unionBtn.addEventListener('click', anonClickMenuFunct, false);
+sqlcharBtn.addEventListener('click', anonClickMenuFunct, false);
 
 postdataCbx.addEventListener('change', togglepostdata);
 refererCbx.addEventListener('change', togglereferer);
@@ -100,6 +108,22 @@ refererfield.addEventListener('focus', anonFocusFunct, false );
 urlfield.addEventListener('click', onFieldClick, false );
 postdatafield.addEventListener('click', onFieldClick, false );
 refererfield.addEventListener('click', onFieldClick, false );
+
+/* add event listeners to urlfield */
+urlfield.addEventListener('keypress',
+  function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13 && e.ctrlKey) { // exec ctrl+enter
+      execute();
+    }
+/*    if (key === 83 && e.altKey && e.ctrlKey) { // split ctrl+alt+s
+      splitUrl();
+    }
+    if (key === 88 && e.altKey && e.ctrlKey) { // load ctrl+alt+x
+      loadURL();
+    }*/
+  }
+  );
 
 function onFieldFocus ( event ){
   currentFocusField = event.currentTarget;
@@ -140,6 +164,11 @@ function onClickMenu(event) {
       var newString = unescape(txt);
       this.setSelectedText( newString );
       break;
+    case 'reverse':
+      var txt = this.getSelectedText();
+      var newString = HackBar.Strings.reverseString(txt);
+      this.setSelectedText( newString );
+      break;
     case 'md5hash':
       var txt = this.getSelectedText();
       var newString = Encrypt.md5(txt);
@@ -159,6 +188,32 @@ function onClickMenu(event) {
       var txt = this.getSelectedText();
       var newString = Encrypt.rot13(txt);
       this.setSelectedText( newString );
+      break;
+    case 'union':
+      this.setSelectedText(HackBar.SQL.selectionToUnionSelect());
+      break;
+    case 'sqlchar':
+      var txt = this.getSelectedText();
+      menu = prompt('dbms? 0: MySQL, 1: mssql, 2: oracle, 3: stringFromCharCode, 4: htmlChar');
+      switch (menu)
+      {
+        default:
+        case "0":
+          this.setSelectedText(HackBar.SQL.selectionToSQLChar('mysql', txt));
+          break;
+        case "1":
+          this.setSelectedText(HackBar.SQL.selectionToSQLChar('mssql', txt));
+          break;
+        case "2":
+          this.setSelectedText(HackBar.SQL.selectionToSQLChar('oracle', txt));
+          break;
+        case "3":
+          this.setSelectedText(HackBar.SQL.selectionToSQLChar('stringFromCharCode', txt));
+          break;
+        case "4":
+          this.setSelectedText(HackBar.SQL.selectionToSQLChar('htmlChar', txt));
+          break;
+      }
       break;
   }
 
@@ -185,7 +240,7 @@ browser.tabs.query({windowId: myWindowId, active: true})
         postdataCbx.checked = true;
         togglepostdata();
       }
-      if(storedInfo[Object.keys(storedInfo)[0]][1]==true) // enable referer 
+      if(storedInfo[Object.keys(storedInfo)[0]][1]==true) // enable referer
       {
         refererCbx.checked = true;
         togglereferer();
@@ -235,7 +290,7 @@ function loadURL ()
       var currentTabUrl = tabs[0].url;
       urlfield.value = currentTabUrl;
       storedInfo = browser.storage.local.get(currentTabUrl);
-      if(storedInfo) 
+      if(storedInfo)
         postdatafield.value = storedInfo[Object.keys(storedInfo)[0]][1];
       else
         postdatafield.value = "";
@@ -298,7 +353,7 @@ function execute ()
     return;
   }
   var postData = getPostdata();
-  if (typePostdata == "formdata") 
+  if (typePostdata == "formdata")
   {
     var scriptpost = 'document.body.innerHTML += \'<form id="newhackbardynForm" action="'+ urlfield.value +'" method="post">';
     for (var i = 0; i < postData.length; i++) {
@@ -321,7 +376,7 @@ function execute ()
     var executing = browser.tabs.executeScript({
       code: scriptpost
     });
-    executing.then(null, null);  
+    executing.then(null, null);
   }
   else // for raw data and mutilpart formdata
   {
@@ -342,7 +397,7 @@ function execute ()
         var executing = browser.tabs.executeScript({
           code: scriptpost
         });
-        executing.then(null, null);  
+        executing.then(null, null);
       });
     });
   }
